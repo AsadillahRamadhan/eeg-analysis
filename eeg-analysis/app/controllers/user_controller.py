@@ -8,7 +8,7 @@ class UserController:
         users = User.query.filter(User.id != session.get('user_id')).all()
         return render_template('user/index.html', users=users, current_url=request.url, title="User Management")
     
-    def update_or_delete_user():
+    def update_or_delete_user(id):
         method = request.form.get('_method', '').upper()
         if method == "PUT":
             username = request.form['username']
@@ -25,41 +25,42 @@ class UserController:
             db.session.commit()
 
             flash("User updated!", "message")
-            flash("true", "success")
+            flash(True, "success")
             return redirect(request.referrer or '/dashboard')
         elif method == "DELETE":
             user = User.query.get_or_404(id)
             db.session.delete(user)
             db.session.commit()
             flash("User deleted!", "message")
-            flash("true", "success")
+            flash(True, "success")
             return redirect(request.referrer or '/dashboard')
         flash("Method not allowed!", "message")
-        flash("false", "success")
+        flash(False, "success")
         return redirect(request.referrer or '/dashboard')
     
     def create_user():
-        username, email, password = request.form['username'], request.form['email'], request.form['password']
+        username, email, password, role = request.form['username'], request.form['email'], request.form['password'], request.form.get('role')
 
         if(not username or not email or not password):
             flash("Fill all of those credentials!", "message")
-            flash("false", "success")
+            flash(False, "success")
             return redirect(request.referrer or '/')
         
         prev_user = User.query.filter(or_(User.email == email, User.username == username)).first()
         if(prev_user):
             flash("The username or email already taken!", "message")
-            flash("false", "success")
+            flash(False, "success")
             return redirect(request.referrer or '/')
         
         user = User(
             email=email,
-            username=username
+            username=username,
+            role=role
         )
         user.password = password
         db.session.add(user)
         db.session.commit()
 
         flash("User created!", "message")
-        flash("true", "success")
+        flash(True, "success")
         return redirect(request.referrer or '/')

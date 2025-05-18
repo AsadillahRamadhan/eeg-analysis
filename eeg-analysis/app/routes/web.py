@@ -26,8 +26,8 @@ def render_user():
     return UserController.render_user()
 
 @web.post('/user/<int:id>')
-def update_or_delete_user():
-    return UserController.update_or_delete_user()
+def update_or_delete_user(id):
+    return UserController.update_or_delete_user(id)
 
 @web.post('/user')
 def create_user():
