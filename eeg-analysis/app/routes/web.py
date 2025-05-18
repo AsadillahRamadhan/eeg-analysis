@@ -3,8 +3,15 @@ from app.controllers.auth_controller import AuthController
 from app.controllers.dashboard_controller import DashboardController
 from app.controllers.analyze_controller import AnalyzeController
 from app.controllers.logs_controller import LogsController
+from app.controllers.user_controller import UserController
 
 web = Blueprint('web', __name__)
+
+@web.before_request
+def global_middleware():
+    return AuthController.global_middleware()
+
+@web.get('/')
 
 @web.get('/login')
 def login_view():
@@ -13,6 +20,22 @@ def login_view():
 @web.post('/login')
 def login_process():
     return AuthController.login_process()
+
+@web.get('/user')
+def render_user():
+    return UserController.render_user()
+
+@web.post('/user/<int:id>')
+def update_or_delete_user():
+    return UserController.update_or_delete_user()
+
+@web.post('/user')
+def create_user():
+    return UserController.create_user()
+
+@web.post('/logout')
+def logout():
+    return AuthController.logout()
 
 @web.get('/dashboard')
 def dashboard_view():

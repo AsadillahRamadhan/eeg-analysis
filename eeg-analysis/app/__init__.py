@@ -1,7 +1,12 @@
 from flask import Flask
 from configs.db import Database, db, migrate
 from app.routes.web import web
+from commands.seed import seed_command
 import os
+
+def register_commands(app):
+    app.cli.add_command(seed_command)
+
 
 def create_app():
     template_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
@@ -15,5 +20,6 @@ def create_app():
     migrate.init_app(app, db)
 
     app.register_blueprint(web)
+    register_commands(app)
 
     return app
