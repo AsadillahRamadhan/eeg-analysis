@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect
+from flask import render_template, request, flash, redirect, session
 from app.models.log import Log
 from app import db
 import os
@@ -19,7 +19,7 @@ class LogsController:
             'both': 'Time & Freq Domain'
         }
 
-        logs = Log.query.order_by(Log.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
+        logs = Log.query.filter_by(user_id=session['user_id']).order_by(Log.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
         for log in logs:
             log.model_type = mapping[log.model_type]
             log.extraction_type = mapping[log.extraction_type]

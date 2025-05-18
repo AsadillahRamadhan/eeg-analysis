@@ -17,6 +17,7 @@ from app.models.log import Log, TypeEnum, ModelTypeEnum, ExtractionTypeEnum
 import joblib
 import os
 import uuid
+from flask import session
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from app import db
@@ -32,7 +33,7 @@ class PreprocessService:
 
         if result['success']:
             new_experiment = Log(
-                user_id = 1,
+                user_id = session['user_id'],
                 type = TypeEnum.training,
                 model_type = ModelTypeEnum(model_type),
                 extraction_type = ExtractionTypeEnum(extraction_mode),
@@ -354,7 +355,7 @@ class PreprocessService:
 
         if result['success']:
             new_test = Log(
-                user_id = 1,
+                user_id = session['user_id'],
                 type = TypeEnum.testing,
                 model_type = ModelTypeEnum(result['model_type']),
                 extraction_type = ExtractionTypeEnum(extraction_mode),
