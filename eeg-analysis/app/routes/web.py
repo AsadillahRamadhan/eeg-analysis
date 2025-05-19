@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, redirect
 from app.controllers.auth_controller import AuthController
 from app.controllers.dashboard_controller import DashboardController
 from app.controllers.analyze_controller import AnalyzeController
@@ -12,6 +12,8 @@ def global_middleware():
     return AuthController.global_middleware()
 
 @web.get('/')
+def index():
+    return redirect('/dashboard')
 
 @web.get('/login')
 def login_view():

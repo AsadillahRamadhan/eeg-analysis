@@ -34,12 +34,9 @@ class AuthController:
         if request.path == '/login':
             if session.get('user_id'):
                 return redirect('/dashboard')
-
-        if request.path == '/':
-            if session.get('user_id'):
-                return redirect('/dashboard')
-            else:
-                return redirect('/login')
+        else:
+            if not session.get('user_id'):
+                return redirect('/login')    
 
         protected_routes = {
             '/user': ['super_admin']
