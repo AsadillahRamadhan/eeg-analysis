@@ -6,7 +6,7 @@
   aria-labelledby="modal{{ loop.index }}Label"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="modal{{ loop.index }}Label">
@@ -20,41 +20,43 @@
         ></button>
       </div>
       <div class="modal-body">
-        <div>
-          <h6>Classification Report</h6>
+        <div class="d-flex justify-between">
           <div>
-            <table class="table text-xs">
-              <thead>
-                <tr class="text-center">
-                  <th>Class</th>
-                  <th>Precision</th>
-                  <th>Recall</th>
-                  <th>F1-Score</th>
-                  <th>Support</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for label, metrics in log.classification_report.items() %} {%
-                if label != 'accuracy' %}
-                <tr class="text-center">
-                  <td>{{ label }}</td>
-                  <td>{{ "%.4f"|format(metrics["precision"]) }}</td>
-                  <td>{{ "%.4f"|format(metrics["recall"]) }}</td>
-                  <td>{{ "%.4f"|format(metrics["f1-score"]) }}</td>
-                  <td>{{ metrics["support"] }}</td>
-                </tr>
-                {% endif %} {% endfor %}
-              </tbody>
-            </table>
+            <h6>Classification Report</h6>
+            <div>
+              <table class="table text-xs">
+                <thead>
+                  <tr class="text-center">
+                    <th>Class</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>Support</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for label, metrics in log.classification_report.items() %} {%
+                  if label != 'accuracy' %}
+                  <tr class="text-center">
+                    <td>{{ label }}</td>
+                    <td>{{ "%.4f"|format(metrics["precision"]) }}</td>
+                    <td>{{ "%.4f"|format(metrics["recall"]) }}</td>
+                    <td>{{ "%.4f"|format(metrics["f1-score"]) }}</td>
+                    <td>{{ metrics["support"] }}</td>
+                  </tr>
+                  {% endif %} {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div>
-          <h6>Confusion Matrix</h6>
-          <canvas
-            id="confusionMatrix{{ log.id }}"
-            width="400"
-            height="400"
-          ></canvas>
+          <div style="width: 50%;">
+            <h6>Confusion Matrix</h6>
+            <canvas
+              id="confusionMatrix{{ log.id }}"
+              width="400"
+              height="400"
+            ></canvas>
+          </div>
         </div>
         <div>
           <h6>Download</h6>
